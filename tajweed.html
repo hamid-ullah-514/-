@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجوید القرآن اور مخارج الحروف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #eef7fe;
+            --card-bg: #ffffff;
+            --card-border: #bfdbfe;
+            --primary-blue: #2563eb;
+            --header-gradient: linear-gradient(135deg, #1d6fe6 0%, #00b4db 100%);
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            --border-radius: 16px;
+            --shadow-blue: 0 10px 25px rgba(37, 99, 235, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Nastaliq Urdu', serif; }
+
+        body {
+            background-color: var(--bg-light) !important;
+            color: var(--text-dark) !important;
+            line-height: 2.3;
+            padding-bottom: 60px;
+        }
+
+        /* تصویر والا بلیو گریڈینٹ ہیڈر */
+        header {
+            background: var(--header-gradient) !important;
+            border-bottom: 3px solid #1d4ed8 !important;
+            text-align: center;
+            padding: 50px 20px 40px;
+            box-shadow: 0 8px 25px rgba(29, 111, 230, 0.25);
+        }
+
+        header h1 { 
+            font-size: 2.6rem; 
+            color: #ffffff !important; 
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
+            margin-bottom: 10px; 
+            font-weight: 700; 
+        }
+
+        header p { 
+            font-size: 1.2rem; 
+            color: #e0f2fe !important; 
+            opacity: 0.95; 
+        }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        .section-title { 
+            text-align: center; 
+            font-size: 2rem; 
+            color: var(--primary-blue) !important; 
+            margin: 50px 0 30px; 
+            font-weight: 700; 
+        }
+
+        .section-title::after { 
+            content: ''; 
+            display: block; 
+            width: 140px; 
+            height: 3px; 
+            background: linear-gradient(90deg, transparent, var(--primary-blue), transparent); 
+            margin: 12px auto 0; 
+            border-radius: 2px; 
+        }
+
+        .makharij-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--card-bg) !important;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-blue);
+            overflow: hidden;
+            transition: all 0.35s ease;
+            border: 1px solid var(--card-border) !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--primary-blue) !important; 
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2); 
+        }
+
+        .image-placeholder {
+            height: 190px;
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-bottom: 2px dashed var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .image-placeholder:hover { background: linear-gradient(135deg, #bfdbfe 0%, #dbeafe 100%); }
+
+        .image-placeholder .icon { font-size: 3rem; margin-bottom: 6px; transition: transform 0.3s ease; }
+
+        .image-placeholder:hover .icon { transform: scale(1.15); }
+
+        .image-placeholder .btn-text { 
+            color: #ffffff !important; 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            background: var(--primary-blue); 
+            padding: 4px 22px; 
+            border-radius: 30px; 
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); 
+        }
+
+        .card-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+
+        .card-content h3 { 
+            color: var(--primary-blue) !important; 
+            font-size: 1.45rem; 
+            margin-bottom: 12px; 
+            padding-bottom: 6px; 
+            border-bottom: 1px solid var(--card-border); 
+            display: inline-block; 
+        }
+
+        .card-content p { color: var(--text-muted) !important; font-size: 1.05rem; margin-bottom: 8px; }
+        .card-content p strong { color: var(--text-dark) !important; }
+
+        .letters-badge { 
+            background: #dbeafe !important; 
+            color: #1e40af !important; 
+            padding: 6px 16px; 
+            border-radius: 30px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            display: inline-block; 
+            margin-top: 15px; 
+            text-align: center; 
+            border: 1px solid var(--card-border); 
+        }
+
+        .accordion { 
+            background: var(--card-bg) !important; 
+            border-radius: var(--border-radius); 
+            overflow: hidden; 
+            box-shadow: var(--shadow-blue); 
+            border: 1px solid var(--card-border) !important; 
+        }
+
+        .accordion-item { border-bottom: 1px solid var(--card-border); }
+        .accordion-item:last-child { border-bottom: none; }
+
+        .accordion-header { 
+            width: 100%; 
+            background: none; 
+            border: none; 
+            outline: none; 
+            padding: 22px 25px; 
+            text-align: right; 
+            font-size: 1.25rem; 
+            font-weight: bold; 
+            color: var(--text-dark) !important; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: background 0.3s ease; 
+        }
+
+        .accordion-header:hover { background: #eff6ff; color: var(--primary-blue) !important; }
+        .accordion-header .arrow { color: var(--primary-blue); transition: transform 0.3s ease; font-size: 1rem; }
+
+        .accordion-content { 
+            padding: 0 25px; 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.35s ease, padding 0.35s ease; 
+            background: #f8fafc; 
+            color: var(--text-muted) !important; 
+        }
+
+        .accordion-content.active { padding: 22px 25px; max-height: 800px; }
+
+        .show-img-btn { 
+            background: var(--primary-blue); 
+            color: #ffffff !important; 
+            border: none; 
+            padding: 10px 24px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-size: 1.05rem; 
+            font-weight: bold; 
+            margin-top: 15px; 
+            display: inline-block; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); 
+        }
+
+        .show-img-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); 
+            background: #1d4ed8; 
+        }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            padding: 40px 20px; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(8px); 
+        }
+
+        .modal-content { 
+            margin: auto; 
+            display: block; 
+            max-width: 90%; 
+            max-height: 85vh; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
+            border: 3px solid var(--primary-blue); 
+            animation: zoomIn 0.35s ease-in-out; 
+        }
+
+        @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .close-btn { 
+            position: absolute; 
+            top: 25px; 
+            left: 40px; 
+            color: #ffffff; 
+            font-size: 45px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: color 0.2s; 
+            line-height: 1; 
+        }
+
+        .close-btn:hover { color: var(--primary-blue); }
+
+        @media (max-width: 768px) { 
+            header h1 { font-size: 1.9rem; } 
+            .section-title { font-size: 1.5rem; } 
+            .image-placeholder { height: 160px; } 
+            .close-btn { top: 15px; left: 20px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>تجوید القرآن اور مخارج الحروف</h1>
+        <p>تصویر دیکھنے کے لیے متعلقہ کارڈ یا بٹن پر کلک کریں</p>
+    </header>
+
+    <div class="container">
+
+        <h2 class="section-title">مخارج الحروف (تلفظ کے ۵ بنیادی مقامات)</h2>
+        <div class="makharij-grid">
+            <div class="card">
+                <div class="image-placeholder trigger-img" data-img="download.jpg">
+                    <span class="icon">🖼️</span>
+                    <span class="btn-text">تصویر دیکھیں</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3>۱. مخرج الحلق (گلا)</h3>
+                        <p>گلے کے مختلف حصوں سے 6 حروف ادا ہوتے ہیں جنہیں <strong>حروفِ حلقی</strong> کہتے ہیں۔</p>
+                        <p>• <strong>اقصائے حلق:</strong> ء ، ہ (سینے کی طرف)</p>
+                        <p>• <strong>وسطِ حلق:</strong> ع ، ح (درمیانی حصہ)</p>
+                        <p>• <strong>ادنائے حلق:</strong> غ ، خ (منہ کی طرف)</p>
+                    </div>
+                    <div class="letters-badge">حروف: ء ، ہ ، ع ، ح ، غ ، خ</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image-placeholder trigger-img" data-img="download (1).jpg">
+                    <span class="icon">🖼️</span>
+                    <span class="btn-text">تصویر دیکھیں</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3>۲. مخرج اللسان (زبان)</h3>
+                        <p>زبان کے مختلف حصوں (جڑ، درمیان، کنارے اور نوک) سے کل <strong>18 حروف</strong> ادا ہوتے ہیں۔</p>
+                        <p>ان میں (ق، ک، ج، ش، ی، ض، ل، ن، ر، ط، د، ت، ص، ز، س، ظ، ذ، ث) شامل ہیں۔</p>
+                    </div>
+                    <div class="letters-badge">کل حروف: ۱۸ حروف</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image-placeholder trigger-img" data-img="Online Makhraj Huruf.jpg">
+                    <span class="icon">🖼️</span>
+                    <span class="btn-text">تصویر دیکھیں</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3>۳. مخرج الشفتان (دونوں ہونٹ)</h3>
+                        <p>ہونٹوں کی حرکت اور بندش سے 4 حروف ادا ہوتے ہیں:</p>
+                        <p>• <strong>ب ، م:</strong> ہونٹوں کی بندش سے۔</p>
+                        <p>• <strong>و:</strong> ہونٹوں کو گول کرنے سے۔</p>
+                        <p>• <strong>ف:</strong> ثنایا علیا اور نچلے ہونٹ سے۔</p>
+                    </div>
+                    <div class="letters-badge">حروف: ب ، م ، و ، ف</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image-placeholder trigger-img" data-img="download (2).jpg">
+                    <span class="icon">🖼️</span>
+                    <span class="btn-text">تصویر دیکھیں</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3>۴. مخرج الجوف (منہ کا خالی حصہ)</h3>
+                        <p>منہ اور گلے کا درمیانی خالی حصہ جہاں سے حروفِ مدہ ادا ہوتے ہیں۔</p>
+                        <p>• الف مدہ (زبر کے بعد)</p>
+                        <p>• یاء مدہ (زیر کے بعد)</p>
+                        <p>• واؤ مدہ (پیش کے بعد)</p>
+                    </div>
+                    <div class="letters-badge">حروفِ مدہ: ا ، و ، ی</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="image-placeholder trigger-img" data-img="download (3).jpg">
+                    <span class="icon">🖼️</span>
+                    <span class="btn-text">تصویر دیکھیں</span>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3>۵. مخرج الخیشوم (ناک کا نتھنا)</h3>
+                        <p>یہ ناک کا اندرونی حصہ ہے جہاں سے <strong>غنہ</strong> (ناک میں آواز کو گونجانا) کی آواز نکلتی ہے۔</p>
+                        <p>نون اور میم مشدد، ادغام اور اخفاء میں استعمال ہوتا ہے۔</p>
+                    </div>
+                    <div class="letters-badge">صفت: غنہ (گونجدار آواز)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">تجوید کے بنیادی قواعد</h2>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>۱. حروفِ حلقی اور اظہار کا قاعدہ</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p>نون ساکن (نْ) یا تنوین (ً ٍ ٌ) کے بعد اگر <strong>حروفِ حلقی (ء، ہ، ع، ح، غ، خ)</strong> میں سے کوئی حرف آ جائے تو وہاں <strong>اظہار</strong> ہوگا، یعنی نون ساکن یا تنوین کی آواز کو بغیر غنہ کے صاف اور ظاہر کر کے پڑھیں گے۔</p>
+                    <button class="show-img-btn trigger-img" data-img="حروف حلقی  مخارج الحروف.jpg">🔍 حروف حلقی کا چارٹ دیکھیں</button>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>۲. نون ساکن اور تنوین کے ۴ قواعد</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p><strong>۱. اظہار:</strong> صاف پڑھنا (حروف حلقی کے ساتھ)۔</p>
+                    <p><strong>۲. ادغام:</strong> ملانا (حروف یرملون: ی، ر، م، ل، و، ن کے ساتھ)۔</p>
+                    <p><strong>۳. اقلاب:</strong> نون کو میم سے بدلنا (حرف 'ب' کے ساتھ)۔</p>
+                    <p><strong>۴. اخفاء:</strong> آواز کو ناک میں چھپانا (باقی ۱۵ حروف کے ساتھ)۔</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>۳. میم ساکن (مْ) کے قواعد</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p><strong>۱. ادغامِ شفوی (مثلمین):</strong> میم ساکن کے بعد 'م' آئے تو ملائیں گے۔</p>
+                    <p><strong>۲. اخفاءِ شفوی:</strong> میم ساکن کے بعد 'ب' آئے تو چھپا کر غنہ کریں گے۔</p>
+                    <p><strong>۳. اظہارِ شفوی:</strong> 'م' اور 'ب' کے علاوہ تمام حروف پر صاف پڑھیں گے۔</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>۴. قلقلہ کا قاعدہ</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <p>حروفِ قلقلہ ۵ ہیں: <strong>(ق ، ط ، ب ، ج ، د)</strong> جن کا مجموعہ <strong>"قُطْبُ جَدٍّ"</strong> ہے۔ جب یہ حروف ساکن ہوں تو ان پر آواز لوٹتی (جنبش کرتی) ہے۔</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <script>
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');
+                const isOpen = content.classList.contains('active');
+
+                document.querySelectorAll('.accordion-content').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.accordion-header .arrow').forEach(a => {
+                    a.style.transform = 'rotate(0deg)';
+                });
+
+                if (!isOpen) {
+                    content.classList.add('active');
+                    if(arrow) arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const closeBtn = document.querySelector('.close-btn');
+
+        document.querySelectorAll('.trigger-img').forEach(element => {
+            element.addEventListener('click', function() {
+                const imgPath = this.getAttribute('data-img');
+                modal.style.display = 'block';
+                modalImg.src = imgPath;
+            });
+        });
+
+        closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; } });
+    </script>
+</body>
+</html>
